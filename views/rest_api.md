@@ -460,7 +460,7 @@ curl -X PUT \
   -H "X-LC-Key: UtOCzqb67d3sN12Kts4URwy8" \
   -H "Content-Type: application/json" \
   -d '{"content": "更新一篇博客的内容"}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 对于 JavaScript 使用，LeanCloud 支持跨域资源共享，所以你可以将这些 header 同 XMLHttpRequest 一同使用。
@@ -475,7 +475,7 @@ curl -X PUT \
   -H "X-LC-Sign: d5bcbb897e19b2f6633c716dfdfaf9be,1453014943466" \
   -H "Content-Type: application/json" \
   -d '{"content": "在 HTTP header 中使用 X-LC-Sign 来更新一篇博客的内容"}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 **X-LC-Sign** 的值是由 `sign,timestamp[,master]` 组成的字符串：
@@ -601,7 +601,7 @@ https://{{host}}/1.1/users
 针对于一个特定的对象的操作可以通过组织一个 URL 来做。例如，对 Post 中的一个 objectId 为 `558e20cbe4b060308e3eb36c` 的对象的操作应使用如下 URL：
 
 ```
-https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 ### 创建对象
@@ -621,7 +621,7 @@ curl -X POST \
 
 ```sh
 Status: 201 Created
-Location: https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+Location: https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 响应的主体是一个 JSON 对象，包含新的对象的 objectId 和 createdAt 时间戳。
@@ -656,7 +656,7 @@ fetchWhenSave 选项对更新对象也同样有效，但是它仅返回已被更
 curl -X GET \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 返回的主体是一个 JSON 对象包含所有用户提供的 field 加上 createdAt、updatedAt 和 objectId 字段：
@@ -680,7 +680,7 @@ curl -X GET \
   -H "X-LC-Key: {{appkey}}" \
   -G \
   --data-urlencode 'include=author' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 ### 更新对象
@@ -693,7 +693,7 @@ curl -X PUT \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"content": "每个 JavaScript 程序员必备的 8 个开发工具: http://buzzorange.com/techorange/2015/03/03/9-javascript-ide-editor/"}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 返回的 JSON 对象只会包含一个 updatedAt 字段，表明更新发生的时间：
@@ -714,7 +714,7 @@ curl -X PUT \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"upvotes":{"__op":"Increment","amount":1}}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 这样就将对象的 **upvotes** 属性值（被用户点赞的次数）加上 1，其中 **amount** 为递增的数字大小，如果为负数，则为递减。
@@ -735,7 +735,7 @@ curl -X PUT \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"flags":{"__op":"BitOr","value": 0x0000000000000004}}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 
@@ -755,7 +755,7 @@ curl -X PUT \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"tags":{"__op":"AddUnique","objects":["Frontend","JavaScript"]}}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 {# --- issue #2227 remove relation ---
@@ -769,7 +769,7 @@ curl -X PUT \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"likes":{"__op":"AddRelation","objects":[{"__type":"Pointer","className":"_User","objectId":"51c3ba67e4b0f0e851c16221"}]}}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 用户取消了对这条微博的喜欢（删除关系）：
@@ -780,7 +780,7 @@ curl -X PUT \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"likes":{"__op":"RemoveRelation","objects":[{"__type":"Pointer","className":"_User","objectId":"51fa3f64e4b05df1766cfb90"}]}}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 --- issue #2227 remove relation --- #}
 
@@ -821,7 +821,7 @@ URL 中 where 参数的值是 `%7B%22balance%22%3A%7B%22%24gte%22%3A%2030%7D%7D`
 curl -X DELETE \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 还可以使用 Delete 操作删除一个对象的一个字段（注意此时** HTTP Method 还是 PUT**）：
@@ -832,7 +832,7 @@ curl -X PUT \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"downvotes":{"__op":"Delete"}}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 #### 按条件删除对象
@@ -844,7 +844,7 @@ curl -X DELETE \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
-  "https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c?where=%7B%22clicks%22%3A%200%7D"
+  "https://{{host}}/1.1/classes/Post/<objectId>?where=%7B%22clicks%22%3A%200%7D"
 ```
 
 URL 中 where 参数的值是 `%7B%22clicks%22%3A%200%7D`，其实这是 `{"clicks": 0}` 被 URL 编码后的结果。更多 where 查询的例子请参考 [查询](#查询)。
@@ -3218,7 +3218,7 @@ Strict-Transport-Security: max-age=31536000
   '{"_method":"GET",
     "_ApplicationId":"{{appid}}",
     "_ApplicationKey":"{{appkey}}"}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 对应的输出：
@@ -3254,7 +3254,7 @@ curl -i -X POST \
     "_ApplicationId":"{{appid}}",
     "_ApplicationKey":"{{appkey}}",
     "upvotes":99}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 对应的输出：
@@ -3282,7 +3282,7 @@ curl -i -X POST \
   '{"_method":  "DELETE",
     "_ApplicationId":"{{appid}}",
     "_ApplicationKey":"{{appkey}}"}' \
-  https://{{host}}/1.1/classes/Post/558e20cbe4b060308e3eb36c
+  https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
 对应的输出是：
