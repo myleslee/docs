@@ -390,3 +390,37 @@ JavaRequestSignImplementation.instance().setUseMasterKey(true);
   }
 ```
 {% endblock %}
+
+{% block hookDeadLoop %}
+
+{{ 
+    LE.deadLoopText({
+      hookName:                hook_after_update,
+      objectName:              'leancloud.Object 需替换',
+      createWithoutDataMethod: 'leancloud.Object.create_without_data() 需替换', disableBeforeHook:       'leancloud.Object.disable_before_hook() 需替换', 
+      disableAfterHook:        'leancloud.Object.disable_after_hook() 需替换'
+    })
+}}
+
+```java
+// 以下代码需要替换
+@engine.after_update('Post')
+def after_post_update(post):
+    # 直接修改并保存对象不会再次触发 after update hook 函数
+    post.set('foo', 'bar')
+    post.save()
+
+    # 如果有 fetch 操作，则需要在新获得的对象上调用相关的 disable 方法
+    # 来确保不会再次触发 Hook 函数
+    post.fetch()
+    post.disable_after_hook()
+    post.set('foo', 'bar')
+
+    # 如果是其他方式构建对象，则需要在新构建的对象上调用相关的 disable 方法
+    # 来确保不会再次触发 Hook 函数
+    post = leancloud.Object.extend('Post').create_without_data(post.id)
+    post.disable_after_hook()
+    post.save()
+```
+
+{% endblock %}
