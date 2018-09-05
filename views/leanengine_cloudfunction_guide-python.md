@@ -310,7 +310,8 @@ engine.register(commit_engine)
     LE.deadLoopText({
       hookName:                hook_after_update,
       objectName:              'leancloud.Object',
-      createWithoutDataMethod: 'leancloud.Object.create_without_data()', disableBeforeHook:       'leancloud.Object.disable_before_hook()', 
+      createWithoutDataMethod: 'leancloud.Object.create_without_data()', 
+      disableBeforeHook:       'leancloud.Object.disable_before_hook()', 
       disableAfterHook:        'leancloud.Object.disable_after_hook()'
     })
 }}

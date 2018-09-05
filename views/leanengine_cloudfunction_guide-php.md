@@ -421,7 +421,8 @@ Cloud::define('_conversationUpdate', function($params, $user) {
     LE.deadLoopText({
       hookName:                hook_after_update,
       objectName:              'LeanObject',
-      createWithoutDataMethod: 'LeanObject::create()', disableBeforeHook:       'LeanObject->disableBeforeHook()', 
+      createWithoutDataMethod: 'LeanObject::create()', 
+      disableBeforeHook:       'LeanObject->disableBeforeHook()', 
       disableAfterHook:        'LeanObject->disableAfterHook()'
     })
 }}

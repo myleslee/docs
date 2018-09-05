@@ -396,15 +396,14 @@ JavaRequestSignImplementation.instance().setUseMasterKey(true);
 {{ 
     LE.deadLoopText({
       hookName:                hook_after_update,
-      objectName:              'leancloud.Object 需替换',
-      createWithoutDataMethod: 'leancloud.Object.create_without_data() 需替换',
-      disableBeforeHook:       'leancloud.Object.disable_before_hook() 需替换',
-      disableAfterHook:        'leancloud.Object.disable_after_hook() 需替换'
+      objectName:              'post',
+      createWithoutDataMethod: 'AVObject.createWithoutData(String, String)',
+      disableBeforeHook:       'post.disableBeforeHook()',
+      disableAfterHook:        'post.disableAfterHook()'
     })
 }}
 
 ```java
-// 以下代码需要替换
 @engine.after_update('Post')
 def after_post_update(post):
     # 直接修改并保存对象不会再次触发 after update hook 函数
