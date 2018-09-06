@@ -404,23 +404,24 @@ JavaRequestSignImplementation.instance().setUseMasterKey(true);
 }}
 
 ```java
-@engine.after_update('Post')
-def after_post_update(post):
-    # 直接修改并保存对象不会再次触发 after update hook 函数
-    post.set('foo', 'bar')
-    post.save()
+@EngineHook(className="Post", type = EngineHookType.afterUpdate)
+  public static void afterUpdatePost(AVObject post) throws AVException {
+    // 直接修改并保存对象不会再次触发 after update hook 函数
+    post.put("foo", "bar");
+    post.save();
 
-    # 如果有 fetch 操作，则需要在新获得的对象上调用相关的 disable 方法
-    # 来确保不会再次触发 Hook 函数
-    post.fetch()
-    post.disable_after_hook()
-    post.set('foo', 'bar')
+    // 如果有 fetch 操作，则需要在新获得的对象上调用相关的 disable 方法
+    // 来确保不会再次触发 Hook 函数
+    post.fetch();
+    post.disableAfterHook();
+    post.put("foo", "bar");
 
-    # 如果是其他方式构建对象，则需要在新构建的对象上调用相关的 disable 方法
-    # 来确保不会再次触发 Hook 函数
-    post = leancloud.Object.extend('Post').create_without_data(post.id)
-    post.disable_after_hook()
-    post.save()
+    // 如果是其他方式构建对象，则需要在新构建的对象上调用相关的 disable 方法
+    // 来确保不会再次触发 Hook 函数
+    post = AVObject.createWithoutData("Post", post.getObjectId());
+    post.disableAfterHook();
+    post.save();
+  }
 ```
 
 {% endblock %}
